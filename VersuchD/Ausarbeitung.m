@@ -55,5 +55,13 @@ plot(tY,GpYPaRes);
 plot(tY,sys);
 
 
+%% Latzel n = 3
+
+TiT = 2.47;
+TdT = 0.66;
+KpKr = 2.543;
+
+GpPIDLa = 0;
+
 
 
