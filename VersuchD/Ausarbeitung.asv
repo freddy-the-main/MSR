@@ -32,16 +32,16 @@ Tsum = min_index;
 TsumRT = Tsum*TintervalY
 
 % PID Parameter:
-KrTsum = 1/KpY
-TiTsum = 0.7*TsumRT
-TdTsum = 0.17*TsumRT
-KiTsum = KrTsum/TiTsum
-TaTsum = TdTsum/5
-KdTsum = TdTsum*KrTsum
+KrTsum = 1/KpY;
+TiTsum = 0.7*TsumRT;
+TdTsum = 0.17*TsumRT;
+KiTsum = KrTsum/TiTsum;
+TaTsum = TdTsum/5;
+KdTsum = TdTsum*KrTsum;
 
-GpPIDTsum = KrTsum + tf(KiTsum,[TaTsum 1]) + tf([KdTsum 0],[TaTsum 1]);
+GpPIDTsum = KrTsum + tf(KiTsum,[1 TaTsum]) + tf([0 KdTsum],[1 TaTsum]);
 disp(GpPIDTsum)
-sys = step(GpPIDTsum,tY);
+sys = step(GpPIDTsum*GpYPa,tY);
 
 
 
@@ -67,9 +67,9 @@ TdL = 0.66 * tYSwa
 
 KrL = KpKr/KpY
 
-GpPIDLa = KrL + tf(KrL,[TiL 0]) + tf([KrL*TdL 0],[TdL/5 1]);
+GpPIDLa = KrL + tf(KrL,[0 TiL]) + tf([KrL*TdL 0],[TdL/5 1]);
 disp(GpPIDLa);
-sys = step(GpPIDLa,tY);
+sys = step(GpPIDLa*GpYPa,tY);
 plot(tY,sys);
 
 %% Strejc
