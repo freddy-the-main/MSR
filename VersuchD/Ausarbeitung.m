@@ -1,9 +1,12 @@
 clear
 clc
+clf
 
 addpath('Resourcen\VersuchB');
 addpath('Resourcen\VersuchB\Gruppe1-1_Stellgrößensprung');
 addpath('Resourcen\VersuchB\Gruppe1_1_(Stellgröße-)Störgröße');
+addpath('Resourcen\VersuchB\StrejcY.m')
+
 Auswertung
 
 %% Tsumme
@@ -39,8 +42,9 @@ KiTsum = KrTsum/TiTsum
 TaTsum = TdTsum/5
 KdTsum = TdTsum*KrTsum
 
-GpPIDTsum = KrTsum + tf(KiTsum,[TaTsum 1]) + tf([KdTsum 0],[TaTsum 1]);
-disp(GpPIDTsum)
+GpPIDTsum = KrTsum + tf(KiTsum,[1 0]) + tf([KdTsum 0],[TaTsum 1]);
+GpPIDTsum
+
 sys = step(GpPIDTsum,tY);
 
 
@@ -68,11 +72,47 @@ TdL = 0.66 * tYSwa
 KrL = KpKr/KpY
 
 GpPIDLa = KrL + tf(KrL,[TiL 0]) + tf([KrL*TdL 0],[TdL/5 1]);
-disp(GpPIDLa);
+GpPIDLa
 sys = step(GpPIDLa,tY);
 plot(tY,sys);
 
 %% Strejc
+
+k = (str.T1+str.T2-str.Te)/str.Te
+
+KrStr = 1/KpY + (k^2+1)/2*k 
+TiStr = (((k^2+1)*(k+1))/(k^2+k+1))*str.Te
+
+GpPIDStr = tf([KrStr KrStr/TiStr],[1 0])
+
+sys = step(GpPIDStr,tY);
+plot(tY,sys);
+
+%% Kompensationsregler
+
+%figure(13), hold on, grid on, legend show
+
+%handschriftlich bestimmt
+GpPIKom = tf([1.647 0.237 7.28e-3],[0.689 0.0307 0])
+
+sys = step(GpPIKom,tY);
+KrKom = sys(1)
+TiKom = sys(500)/sys(1) 
+
+plot(tY,step(GpPIKom,tY))
+
+
+
+%% 8.
+stepVec[]
+% Tsum
+
+
+
+
+
+
+
 
 
 

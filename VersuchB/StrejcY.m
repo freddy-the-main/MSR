@@ -69,4 +69,3 @@ plot(t,GpYStrFinalRes,'-','DisplayName',"[T1 ="+T1+"; T2="+T2+"] Final" )
 
 
 
-

@@ -67,6 +67,9 @@ GpYStrFinal = Le*Ri;
 GpYStrFinalRes = step(GpYStrFinal,t); %Sprungantwort
 % plot(t,GpYStrFinalRes,'-','DisplayName',"[T1 ="+T1+"; T2="+T2+"] Final" )
 
+str.T1 = T1;
+str.T2 = T2;
+str.Te = Te;
 
 
 
