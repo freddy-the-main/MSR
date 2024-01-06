@@ -90,7 +90,7 @@ plot(tY,sys);
 
 %% Kompensationsregler
 
-%figure(13), hold on, grid on, legend show
+%
 
 %handschriftlich bestimmt
 GpPIKom = tf([1.647 0.237 7.28e-3],[0.689 0.0307 0])
@@ -104,8 +104,25 @@ plot(tY,step(GpPIKom,tY))
 
 
 %% 8.
-stepVec[]
+
+stepVec = 6 * ones(1,length(tY));
+stepVec(1) = 4;
+
 % Tsum
+
+
+startValue = 4;
+endValue = 6;
+stepSize = endValue - startValue;
+
+% Scale the step input from startValue to endValue
+scaledStep = stepSize * (stepfun(tY, startValue) - stepfun(tY, endValue));
+
+
+figure(13), hold on, grid on, legend show
+plot(tY,step(GpYSwa*GpPIDTsum,tY));
+
+
 
 
 
