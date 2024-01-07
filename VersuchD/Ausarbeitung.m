@@ -50,13 +50,13 @@ sys = step(GpPIDTsum,tY);
 
 
 
-figure(11), hold on, grid on, legend show
+figure(11), clf, hold on, grid on, legend show, 
 plot(tY,TsumVecPos);
 plot(tY,TsumVecNeg);
 plot(tY,abs_diff);
-figure(12), hold on, grid on, legend show
-plot(tY,GpYPaRes);
-plot(tY,sys);
+figure(12), clf, hold on, grid on, legend show,
+plot(tY,GpYPaRes,"b-","DisplayName","GpYPaRes");
+plot(tY,sys,"c-","DisplayName","Tsumme");
 
 
 %% Latzel n = 3
@@ -74,7 +74,7 @@ KrL = KpKr/KpY
 GpPIDLa = KrL + tf(KrL,[TiL 0]) + tf([KrL*TdL 0],[TdL/5 1]);
 GpPIDLa
 sys = step(GpPIDLa,tY);
-plot(tY,sys);
+plot(tY,sys,"g-","DisplayName","Latzel");
 
 %% Strejc
 
@@ -83,10 +83,10 @@ k = (str.T1+str.T2-str.Te)/str.Te
 KrStr = 1/KpY + (k^2+1)/2*k 
 TiStr = (((k^2+1)*(k+1))/(k^2+k+1))*str.Te
 
-GpPIDStr = tf([KrStr KrStr/TiStr],[1 0])
+GpPIStr = tf([KrStr KrStr/TiStr],[1 0])
 
-sys = step(GpPIDStr,tY);
-plot(tY,sys);
+sys = step(GpPIStr,tY);
+plot(tY,sys,"r-","DisplayName","Strejc");
 
 %% Kompensationsregler
 
@@ -99,13 +99,52 @@ sys = step(GpPIKom,tY);
 KrKom = sys(1)
 TiKom = sys(500)/sys(1) 
 
-plot(tY,step(GpPIKom,tY))
+plot(tY,step(GpPIKom,tY),"k-","DisplayName","Kompensationsregler")
 
 
 
 %% 8.
-stepVec[]
+
+
 % Tsum
+
+opt = stepDataOptions;
+opt.InputOffset = 4;
+opt.StepAmplitude = 2;
+
+GpYSwaGpPIDTsum = feedback(GpYSwa*GpPIDTsum,1);
+
+GpYSwaGpPIDTsumRes = step(GpYSwaGpPIDTsum, tY, opt);
+
+%Latzel
+
+GpYSwaGpPIDLa = feedback(GpYSwa*GpPIDLa,1);
+
+GpYSwaGpPIDLaRes = step(GpYSwaGpPIDLa, tY, opt);
+
+%Strejc
+
+GpYSwaGpPIStr = feedback(GpYSwa*GpPIStr,1);
+
+GpYSwaGpPIStrRes = step(GpYSwaGpPIStr, tY, opt);
+
+%Kompensationsregler
+
+GpYSwaGpPIKom = feedback(GpYSwa*GpPIKom,1);
+
+GpYSwaGpPIKomRes = step(GpYSwaGpPIKom, tY, opt);
+
+
+% Plot the step response
+figure(13), clf, hold on, grid on, legend show
+plot(tY, GpYSwaGpPIDTsumRes,"b-","DisplayName","Tsumme");
+plot(tY, GpYSwaGpPIKomRes,"c-","DisplayName","Kompensationsregler");
+plot(tY, GpYSwaGpPIDLaRes,"g-","DisplayName","Latzel");
+plot(tY, GpYSwaGpPIStrRes,"r-","DisplayName","Strejc");
+title('Regelkreissprungantwort');
+xlabel('Time');
+ylabel('Output');
+grid on;
 
 
 
