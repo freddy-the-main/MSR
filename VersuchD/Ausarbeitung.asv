@@ -83,9 +83,9 @@ k = (str.T1+str.T2-str.Te)/str.Te
 KrStr = 1/KpY + (k^2+1)/2*k 
 TiStr = (((k^2+1)*(k+1))/(k^2+k+1))*str.Te
 
-GpPIStr = tf([KrStr KrStr/TiStr],[1 0])
+GpPIDStr = tf([KrStr KrStr/TiStr],[1 0])
 
-sys = step(GpPIStr,tY);
+sys = step(GpPIDStr,tY);
 plot(tY,sys,"r-","DisplayName","Strejc");
 
 %% Kompensationsregler
@@ -118,29 +118,22 @@ GpYSwaGpPIDTsumRes = step(GpYSwaGpPIDTsum, tY, opt);
 
 %Latzel
 
-GpYSwaGpPIDLa = feedback(GpYSwa*GpPIDLa,1);
+GpYSwaGpPIDTLa = feedback(GpYSwa*GpPIDLa,1);
 
-GpYSwaGpPIDLaRes = step(GpYSwaGpPIDLa, tY, opt);
+GpYSwaGpPIDTLaRes = step(GpYSwaGpPIDTLa, tY, opt);
 
 %Strejc
 
-GpYSwaGpPIStr = feedback(GpYSwa*GpPIStr,1);
+GpYSwaGpPIDStr = feedback(GpYSwa*GpPIDStr,1);
 
-GpYSwaGpPIStrRes = step(GpYSwaGpPIStr, tY, opt);
+GpYSwaGpPIDStrRes = step(GpYSwaGpPIDStr, tY, opt);
 
-%Kompensationsregler
 
-GpYSwaGpPIKom = feedback(GpYSwa*GpPIKom,1);
-
-GpYSwaGpPIKomRes = step(GpYSwaGpPIKom, tY, opt);
 
 
 % Plot the step response
 figure(13), clf, hold on, grid on, legend show
 plot(tY, GpYSwaGpPIDTsumRes,"b-","DisplayName","Tsumme");
-plot(tY, GpYSwaGpPIKomRes,"c-","DisplayName","Kompensationsregler");
-plot(tY, GpYSwaGpPIDLaRes,"g-","DisplayName","Latzel");
-plot(tY, GpYSwaGpPIStrRes,"r-","DisplayName","Strejc");
 title('Regelkreissprungantwort');
 xlabel('Time');
 ylabel('Output');
