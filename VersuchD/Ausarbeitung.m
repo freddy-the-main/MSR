@@ -97,13 +97,14 @@ GpPIKom = tf([1.647 0.237 7.28e-3],[0.689 0.0307 0])
 
 sys = step(GpPIKom,tY);
 KrKom = sys(1)
-TiKom = sys(500)/sys(1) 
+KiKom = (sys(500)-sys(1)) 
+TiKom = KrKom/KiKom
 
 plot(tY,step(GpPIKom,tY),"k-","DisplayName","Kompensationsregler")
 
 
 
-%% 8.
+%% 8. A Sollwertsprung
 
 
 % Tsum
@@ -147,7 +148,50 @@ ylabel('Output');
 grid on;
 
 
+%% 8.b
 
+
+
+
+% Tsum
+
+opt = stepDataOptions;
+opt.InputOffset = 5.5;
+opt.StepAmplitude = 1.5;
+
+GpZSwaGpPIDTsum = feedback(GpZSwa*GpPIDTsum,1);
+
+GpZSwaGpPIDTsumRes = step(GpZSwaGpPIDTsum, tY, opt);
+
+%Latzel
+
+GpZSwaGpPIDLa = feedback(GpZSwa*GpPIDLa,1);
+
+GpZSwaGpPIDLaRes = step(GpZSwaGpPIDLa, tY, opt);
+
+%Strejc
+
+GpZSwaGpPIStr = feedback(GpZSwa*GpPIStr,1);
+
+GpZSwaGpPIStrRes = step(GpZSwaGpPIStr, tY, opt);
+
+%Kompensationsregler
+
+GpZSwaGpPIKom = feedback(GpZSwa*GpPIKom,1);
+
+GpZSwaGpPIKomRes = step(GpZSwaGpPIKom, tY, opt);
+
+
+% Plot the step response
+figure(14), clf, hold on, grid on, legend show
+plot(tY, GpZSwaGpPIDTsumRes,"b-","DisplayName","Tsumme");
+plot(tY, GpZSwaGpPIKomRes,"c-","DisplayName","Kompensationsregler");
+plot(tY, GpZSwaGpPIDLaRes,"g-","DisplayName","Latzel");
+%plot(tY, GpZSwaGpPIStrRes,"r-","DisplayName","Strejc");
+title('Regelkreissprungantwort');
+xlabel('Time');
+ylabel('Output');
+grid on;
 
 
 
