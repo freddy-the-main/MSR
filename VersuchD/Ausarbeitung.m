@@ -9,7 +9,14 @@ addpath('Resourcen\VersuchB\StrejcY.m')
 
 Auswertung
 
+
+
+
+
 %% Tsumme
+
+
+
 
 TsumVecPos = numel(GpYPaRes);
 TsumVecNeg = numel(GpYPaRes);
@@ -105,7 +112,7 @@ plot(tY,step(GpPIKom,tY),"k-","DisplayName","Kompensationsregler")
 
 
 %% 8. A Sollwertsprung
-
+tY = 1:0.05:400;
 
 % Tsum
 
@@ -148,50 +155,6 @@ ylabel('Output');
 grid on;
 
 
-%% 8.b
-
-
-
-
-% Tsum
-
-opt = stepDataOptions;
-opt.InputOffset = 5.5;
-opt.StepAmplitude = 1.5;
-
-GpZSwaGpPIDTsum = feedback(GpZSwa*GpPIDTsum,1);
-
-GpZSwaGpPIDTsumRes = step(GpZSwaGpPIDTsum, tY, opt);
-
-%Latzel
-
-GpZSwaGpPIDLa = feedback(GpZSwa*GpPIDLa,1);
-
-GpZSwaGpPIDLaRes = step(GpZSwaGpPIDLa, tY, opt);
-
-%Strejc
-
-GpZSwaGpPIStr = feedback(GpZSwa*GpPIStr,1);
-
-GpZSwaGpPIStrRes = step(GpZSwaGpPIStr, tY, opt);
-
-%Kompensationsregler
-
-GpZSwaGpPIKom = feedback(GpZSwa*GpPIKom,1);
-
-GpZSwaGpPIKomRes = step(GpZSwaGpPIKom, tY, opt);
-
-
-% Plot the step response
-figure(14), clf, hold on, grid on, legend show
-plot(tY, GpZSwaGpPIDTsumRes,"b-","DisplayName","Tsumme");
-plot(tY, GpZSwaGpPIKomRes,"c-","DisplayName","Kompensationsregler");
-plot(tY, GpZSwaGpPIDLaRes,"g-","DisplayName","Latzel");
-%plot(tY, GpZSwaGpPIStrRes,"r-","DisplayName","Strejc");
-title('Regelkreissprungantwort');
-xlabel('Time');
-ylabel('Output');
-grid on;
 
 
 

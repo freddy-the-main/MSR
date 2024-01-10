@@ -9,7 +9,14 @@ addpath('Resourcen\VersuchB\StrejcY.m')
 
 Auswertung
 
+tY = 1:0.05:200000;
+
+
+
 %% Tsumme
+
+
+
 
 TsumVecPos = numel(GpYPaRes);
 TsumVecNeg = numel(GpYPaRes);
@@ -51,9 +58,9 @@ sys = step(GpPIDTsum,tY);
 
 
 figure(11), clf, hold on, grid on, legend show, 
-plot(tY,TsumVecPos);
-plot(tY,TsumVecNeg);
-plot(tY,abs_diff);
+%plot(tY,TsumVecPos);
+%plot(tY,TsumVecNeg);
+%plot(tY,abs_diff);
 figure(12), clf, hold on, grid on, legend show,
 plot(tY,GpYPaRes,"b-","DisplayName","GpYPaRes");
 plot(tY,sys,"c-","DisplayName","Tsumme");
@@ -147,8 +154,6 @@ xlabel('Time');
 ylabel('Output');
 grid on;
 
-
-%% 8.b
 
 
 
